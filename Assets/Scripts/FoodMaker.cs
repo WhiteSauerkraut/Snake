@@ -9,12 +9,12 @@ using UnityEngine.UI;
 public class FoodMaker : MonoBehaviour
 {
     // 单例
-    private static FoodMaker instance_;
+    private static FoodMaker _instance;
     public static FoodMaker Instance
     {
         get
         {
-            return instance_;
+            return _instance;
         }
     }
     // x方向限制
@@ -25,6 +25,8 @@ public class FoodMaker : MonoBehaviour
     public int y_limit = 11;
     // 食物预制体
     public GameObject food_prefab;
+    // 奖励预制体
+    public GameObject reward_prefab;
     // 食物图片数组
     public Sprite[] food_sprites;
     // 食物存放容器
@@ -34,7 +36,7 @@ public class FoodMaker : MonoBehaviour
     void Start()
     {
         foodHolder = GameObject.Find("Canvas/FoodHolder").transform;
-        instance_ = this;
+        _instance = this;
         MakeFood();
     }
 
@@ -48,5 +50,15 @@ public class FoodMaker : MonoBehaviour
         int x = Random.Range(-x_limit + x_offset, x_limit);
         int y = Random.Range(-y_limit, y_limit);
         food.transform.localPosition = new Vector3(x * 30, y * 30, 0);
+
+        // 20%概率生成奖励
+        if(Random.Range(0,100) < 20)
+        {
+            GameObject reward = Instantiate(reward_prefab);
+            reward.transform.SetParent(foodHolder, false);
+            x = Random.Range(-x_limit + x_offset, x_limit);
+            y = Random.Range(-y_limit, y_limit);
+            reward.transform.localPosition = new Vector3(x * 30, y * 30, 0);
+        }
     }
 }

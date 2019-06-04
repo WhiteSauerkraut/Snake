@@ -23,12 +23,23 @@ public class ShControl : MonoBehaviour
     public GameObject bodyPrefab;
     // 蛇身图片
     public Sprite[] bodySprites = new Sprite[2];
+    // 死亡标志
+    public bool isDie = false;
+    // 死亡粒子特效
+    public GameObject dieEffect;
+    // 吃食物音效
+    public AudioClip eatClip;
+    // 死亡音效
+    public AudioClip dieClip;
     // 画布对象
     private Transform canvas;
 
     void Awake()
     {
         canvas = GameObject.Find("Canvas").transform;
+        gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("SnakePart/" + PlayerPrefs.GetString("sh", "sh02"));
+        bodySprites[0] = Resources.Load<Sprite>("SnakePart/" + PlayerPrefs.GetString("sb01", "sb0201"));
+        bodySprites[1] = Resources.Load<Sprite>("SnakePart/" + PlayerPrefs.GetString("sb02", "sb0202"));
     }
 
     void Start()
@@ -41,42 +52,42 @@ public class ShControl : MonoBehaviour
     void Update()
     {
         // 空格按下加速
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !MainUIControl.Instance.isPause && !isDie)
         {
             CancelInvoke();
             InvokeRepeating("Move", 0, velocity - delta_vel);
         }
         // 空格弹起恢复正常速度
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Space) && !MainUIControl.Instance.isPause && !isDie)
         {
             CancelInvoke();
             InvokeRepeating("Move", 0, velocity);
         }
         // 按下W键，向上移动
-        if (Input.GetKey(KeyCode.W) && y != -step)
+        if (Input.GetKey(KeyCode.W) && y != -step && !MainUIControl.Instance.isPause && !isDie)
         {
-            gameObject.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            transform.localRotation = Quaternion.Euler(0, 0, 0);
             x = 0;
             y = step;
         }
         // 按下S键，向下移动
-        if (Input.GetKey(KeyCode.S) && y != step)
+        if (Input.GetKey(KeyCode.S) && y != step && !MainUIControl.Instance.isPause && !isDie)
         {
-            gameObject.transform.localRotation = Quaternion.Euler(0, 0, 180);
+            transform.localRotation = Quaternion.Euler(0, 0, 180);
             x = 0;
             y = -step;
         }
         // 按下A键，向左移动
-        if (Input.GetKey(KeyCode.A) && x != step)
+        if (Input.GetKey(KeyCode.A) && x != step && !MainUIControl.Instance.isPause && !isDie)
         {
-            gameObject.transform.localRotation = Quaternion.Euler(0, 0, 90);
+            transform.localRotation = Quaternion.Euler(0, 0, 90);
             x = -step;
             y = 0;
         }
         // 按下D键，向右移动
-        if (Input.GetKey(KeyCode.D) && x != -step)
+        if (Input.GetKey(KeyCode.D) && x != -step && !MainUIControl.Instance.isPause && !isDie)
         {
-            gameObject.transform.localRotation = Quaternion.Euler(0, 0, -90);
+            transform.localRotation = Quaternion.Euler(0, 0, -90);
             x = step;
             y = 0;
         }
@@ -85,12 +96,81 @@ public class ShControl : MonoBehaviour
     // 碰撞进入
     void OnTriggerEnter2D(Collider2D collision)
     {
+        // 与食物碰撞
         if (collision.tag == "Food")
         {
+            AudioSource.PlayClipAtPoint(eatClip, Vector3.zero);
             Destroy(collision.gameObject);
+            MainUIControl.Instance.UpdateUI();
             Grow();
             FoodMaker.Instance.MakeFood();
         }
+        // 与奖励物品碰撞
+        else if(collision.tag == "Reward")
+        {
+            AudioSource.PlayClipAtPoint(eatClip, Vector3.zero);
+            Destroy(collision.gameObject);
+            MainUIControl.Instance.UpdateUI(Random.Range(5, 15) * 10, 1);
+            Grow();
+        }
+        // 与身体碰撞
+        else if(collision.tag == "Body")
+        {
+            Die();
+        }
+        // 与边界碰撞
+        else
+        {
+            if (MainUIControl.Instance.hasBorder)
+            {
+                Die();
+            }
+            else
+            {
+                string name = collision.gameObject.name;
+                switch (name)
+                {
+                    case "Up":
+                        transform.localPosition = new Vector3(transform.localPosition.x, -transform.localPosition.y + 30, transform.localPosition.z);
+                        break;
+                    case "Down":
+                        transform.localPosition = new Vector3(transform.localPosition.x, -transform.localPosition.y - 30, transform.localPosition.z);
+                        break;
+                    case "Left":
+                        transform.localPosition = new Vector3(-transform.localPosition.x + 270, transform.localPosition.y, transform.localPosition.z);
+                        break;
+                    case "Right":
+                        transform.localPosition = new Vector3(-transform.localPosition.x + 330, transform.localPosition.y, transform.localPosition.z);
+                        break;
+                }
+            }
+        }
+    }
+
+    // 死亡
+    void Die()
+    {
+        AudioSource.PlayClipAtPoint(dieClip, Vector3.zero);
+        CancelInvoke();
+        isDie = true;
+        Instantiate(dieEffect);
+
+        // 存储游戏数据
+        PlayerPrefs.SetInt("last_len", MainUIControl.Instance.length);
+        PlayerPrefs.SetInt("last_score", MainUIControl.Instance.score);
+        if (PlayerPrefs.GetInt("best_score", 0) < MainUIControl.Instance.score)
+        {
+            PlayerPrefs.SetInt("best_len", MainUIControl.Instance.length);
+            PlayerPrefs.SetInt("best_score", MainUIControl.Instance.score);
+        }
+
+        StartCoroutine(GameOver(1.5f));
+    }
+
+    IEnumerator GameOver(float t)
+    {
+        yield return new WaitForSeconds(t);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
     }
 
     // 移动函数

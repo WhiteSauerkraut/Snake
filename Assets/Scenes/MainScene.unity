@@ -322,7 +322,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -10}
+  m_Offset: {x: 0, y: -20}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -384,6 +384,7 @@ GameObject:
   - component: {fileID: 517558464}
   - component: {fileID: 517558463}
   - component: {fileID: 517558462}
+  - component: {fileID: 517558466}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -474,6 +475,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &517558466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517558461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c06be2300ee264f9a1f61522570d18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPause: 0
+  score: 0
+  length: 0
+  hasBorder: 1
+  pauseSprites:
+  - {fileID: 21300000, guid: deb918b9b3aa2e24f969108ef9ce6e32, type: 3}
+  - {fileID: 21300000, guid: e4f0e9d913a79b54f9675dc89f2ab870, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,6 +505,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420030}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -500,6 +521,102 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
+--- !u!82 &519420030
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 7fc7cada56d638e4b9c2c7be1c0de76c, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.8
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -607,7 +724,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 10, y: 0}
+  m_Offset: {x: 20, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -749,7 +866,7 @@ GameObject:
   - component: {fileID: 904520495}
   - component: {fileID: 904520497}
   m_Layer: 5
-  m_Name: Skin
+  m_Name: Msg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -807,7 +924,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u65E0\u5C3D\u6A21\u5F0F"
+  m_Text: "\u9636\u6BB51"
 --- !u!222 &904520496
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1072,7 +1189,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 10}
+  m_Offset: {x: 0, y: 20}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1135,7 +1252,7 @@ GameObject:
   - component: {fileID: 1437739844}
   - component: {fileID: 1437739846}
   m_Layer: 5
-  m_Name: Mode
+  m_Name: Score
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1263,6 +1380,8 @@ MonoBehaviour:
   y_limit: 11
   food_prefab: {fileID: 6059768178341310780, guid: 9b80ae2c9a5290645b20a9224326e856,
     type: 3}
+  reward_prefab: {fileID: 6059768178341310780, guid: bedf4b314b7b30f4b8b07d454fa824a7,
+    type: 3}
   food_sprites:
   - {fileID: 21300000, guid: 8adc7582d5999224ca185e0f2bd3630f, type: 3}
   - {fileID: 21300000, guid: a30bab4c2a053bb4294d833cbf4bde9d, type: 3}
@@ -1287,7 +1406,7 @@ GameObject:
   - component: {fileID: 1517899051}
   - component: {fileID: 1517899050}
   m_Layer: 5
-  m_Name: Score
+  m_Name: Length
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1623,7 +1742,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -10, y: 0}
+  m_Offset: {x: -20, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1790,6 +1909,22 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3311216203539262412, guid: 621c4a93826fa6e48849c2a0ce275eb4,
+        type: 3}
+      propertyPath: dieEffect
+      value: 
+      objectReference: {fileID: 1869509813425396, guid: 059a58b7031b96840ac6bb10f03ccfae,
+        type: 3}
+    - target: {fileID: 3311216203539262412, guid: 621c4a93826fa6e48849c2a0ce275eb4,
+        type: 3}
+      propertyPath: dieClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b973c078365b22e4392753cc963d9970, type: 3}
+    - target: {fileID: 3311216203539262412, guid: 621c4a93826fa6e48849c2a0ce275eb4,
+        type: 3}
+      propertyPath: eatClip
+      value: 
+      objectReference: {fileID: 8300000, guid: ed2f178da0347e144b360bd45dd8fed6, type: 3}
     - target: {fileID: 1025884956682671503, guid: 621c4a93826fa6e48849c2a0ce275eb4,
         type: 3}
       propertyPath: m_IsTrigger
